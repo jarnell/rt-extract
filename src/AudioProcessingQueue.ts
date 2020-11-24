@@ -37,7 +37,7 @@ class AudioProcessingQueue {
    * Start processing the queue.
    */
   async startProcessing(): Promise<void> {
-    console.log(chalk.bold('Starting to process...'));
+    console.log(chalk.bold('🛠  Starting to process...'));
     this.isProcessing = true;
     const gauge = new Gauge(); // Init progress bar
     let progress: NodeJS.Timer;
@@ -57,7 +57,7 @@ class AudioProcessingQueue {
         gauge.pulse();
         gauge.show(
           chalk.green.bold(
-            `Processing: ${
+            `🔈 Processing: ${
               this.totalProcessed + 1
             } of ${total} (${item.outputPath.slice(-9)})`
           ),
@@ -85,7 +85,7 @@ class AudioProcessingQueue {
     gauge.hide();
     console.log('');
     console.log(
-      chalk.green.bold('Finished processing in %dm %ds'),
+      chalk.green.bold('✨ Finished processing in %dm %ds'),
       Math.floor(totalHrEnd[0] / 60),
       totalHrEnd[0] % 60
     );

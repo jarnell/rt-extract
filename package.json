@@ -4,7 +4,8 @@
   "description": "Simple CLI tool to download audio files from LiveATC and remove noise and silence using ffmpeg.",
   "main": "./src/index.js",
   "scripts": {
-    "extract": "node dist/index.js"
+    "extract": "node dist/index.js",
+    "clean": "node dist/cleanup.js"
   },
   "author": "",
   "license": "ISC",

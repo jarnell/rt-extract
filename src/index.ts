@@ -83,7 +83,7 @@ const main = async (): Promise<void> => {
   const queue = new AudioProcessingQueue();
 
   console.log('');
-  console.log(chalk.bold('Starting to download...'));
+  console.log(chalk.bold('⬇️  Starting to download...'));
 
   for (let i = 0; i < answers.hours * 2; i++) {
     // Set file name and paths
