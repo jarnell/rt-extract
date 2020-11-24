@@ -41,47 +41,53 @@ class AudioProcessingQueue {
     this.isProcessing = true;
     const gauge = new Gauge(); // Init progress bar
     let progress: NodeJS.Timer;
-    const hrStart = process.hrtime();
+    const totalHrStart = process.hrtime();
+    let itemProcessingTime = 30; // Estimated processing time, will use real value after first is finished
 
     while (this.queue.length > 0) {
       // Use first item in queue
       const item = this.queue[0];
       this.queue = this.queue.slice(1);
+      let tick = 0;
 
       // Create an interval for the progress bar
       progress = setInterval(() => {
+        tick++;
         const total = this.totalProcessed + this.queue.length + 1;
         gauge.pulse();
         gauge.show(
-          `Processing: ${item.outputPath.slice(-9)} (${
-            this.totalProcessed + 1
-          }/${total})`,
-          this.totalProcessed / total
+          chalk.green.bold(
+            `Processing: ${
+              this.totalProcessed + 1
+            } of ${total} (${item.outputPath.slice(-9)})`
+          ),
+          tick / itemProcessingTime / 5
         );
       }, 200);
 
       try {
+        const itemHrStart = process.hrtime();
         await this.process(item);
+        itemProcessingTime = process.hrtime(itemHrStart)[0];
 
         clearInterval(progress);
         this.totalProcessed++;
       } catch (e) {
         clearInterval(progress);
-
         console.log(chalk.red(e.message));
       }
     }
 
     this.isProcessing = false;
-    const hrEnd = process.hrtime(hrStart); // Processing time
+    const totalHrEnd = process.hrtime(totalHrStart); // Processing time
 
     // Hide progress bar and write to console
     gauge.hide();
     console.log('');
     console.log(
       chalk.green.bold('Finished processing in %dm %ds'),
-      Math.floor(hrEnd[0] / 60),
-      hrEnd[0] % 60
+      Math.floor(totalHrEnd[0] / 60),
+      totalHrEnd[0] % 60
     );
   }
 
