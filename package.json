@@ -7,7 +7,7 @@
     "extract": "node dist/index.js",
     "clean": "node dist/cleanup.js"
   },
-  "author": "",
+  "author": "Jakob Arnell",
   "license": "ISC",
   "dependencies": {
     "@types/inquirer": "^7.3.1",

@@ -2,9 +2,6 @@ import { spawn } from 'child_process';
 import chalk from 'chalk';
 import Gauge from 'gauge';
 
-/**
- * Queue item.
- */
 class QueueItem {
   inputPath: string;
   outputPath: string;
@@ -113,24 +110,12 @@ class AudioProcessingQueue {
       ];
       const ffmpeg = spawn('ffmpeg', args);
 
-      /*
-      ffmpeg.stdout.setEncoding('utf8');
-      ffmpeg.stdout.on('data', (data) => {
-        console.log(data);
-      });
-
-      ffmpeg.stderr.setEncoding('utf8');
-      ffmpeg.stderr.on('data', (data) => {
-        console.log(data);
-      });
-      */
-
       ffmpeg.on('close', (code) => {
-        if (code === 0) {
-          resolve();
-        } else {
+        if (code !== 0) {
           reject(new Error('Could not process audio with ffmpeg.'));
         }
+
+        resolve();
       });
     });
   }

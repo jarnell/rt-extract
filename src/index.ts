@@ -14,7 +14,11 @@ import AudioProcessingQueue from './AudioProcessingQueue';
 dayjs.extend(dayjsUtc);
 dayjs.extend(dayjsCustomParseFormat);
 
-const OUTPUT_DIR = path.resolve(process.cwd(), 'output');
+// Directory where files will be outputed
+const OUTPUT_DIR = path.resolve(
+  process.cwd(),
+  process.env.OUTPUT_DIR || 'output'
+);
 
 interface UserPromptValues {
   date: string;
@@ -86,7 +90,6 @@ const main = async (): Promise<void> => {
   console.log(chalk.bold('⬇️  Starting to download...'));
 
   for (let i = 0; i < answers.hours * 2; i++) {
-    // Set file name and paths
     const time = startTime.add(30 * i, 'minute');
 
     // Cancel if next day
